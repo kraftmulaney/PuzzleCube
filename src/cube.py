@@ -22,18 +22,11 @@ class Cube():
         self._empty_cube()
 
     def _empty_cube(self):
-        _cube_values = np.full((self._dx, self._dy, self._dx),
+        self._cube_values = np.full((self._dx, self._dy, self._dx),
             "",
             dtype=np.dtype('U50'))
 
-    def _is_coord_within_cube(self, coord):
-        if not validate_origin(coord):
-            raise TypeError("Invalid coordinate")
-
-        x = coord[0]
-        y = coord[1]
-        z = coord[2]
-
+    def _is_xyz_within_cube(self, x, y, z):
         if x < 0 or x >= self._dx:
             return False
 
@@ -44,6 +37,26 @@ class Cube():
             return False
         
         return True
+
+    def _is_coord_within_cube(self, coord):
+        if not validate_origin(coord):
+            raise TypeError("Invalid coordinate")
+
+        x = coord[0]
+        y = coord[1]
+        z = coord[2]
+
+        return self._is_xyz_within_cube(x, y, z)
+
+    def _get_color(self, x, y, z):
+        if not self._is_xyz_within_cube(x, y, z):
+            raise ValueError("Invalid xyz")
+        return self._cube_values[x, y, z]
+
+    def _set_color(self, x, y, z, color):
+        if not self._is_xyz_within_cube(x, y, z):
+            raise ValueError("Invalid xyz")
+        self._cube_values[x, y, z] = color
 
     # Returns False if the piece cant be placed there
     def try_place_piece(self, piece, origin, orientation):
@@ -66,8 +79,19 @@ class Cube():
             if not self._is_coord_within_cube(piece_coord.loc):
                 return False
 
+            if self._get_color(
+                piece_coord.loc[0],
+                piece_coord.loc[1],
+                piece_coord.loc[2]) != "":
+                return False
+
         # Place the piece
-        # $TODO
+        for piece_coord in piece_coords:
+            self._set_color(
+                piece_coord.loc[0],
+                piece_coord.loc[1],
+                piece_coord.loc[2],
+                piece_coord.color)
 
         self._listpieces.add(piece)
 

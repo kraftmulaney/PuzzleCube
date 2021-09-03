@@ -4,6 +4,11 @@ from mypiece import Orientation, check_valid_orienation, validate_origin, Piece
 from coordhelper import CoordinateHelper
 
 class Cube():
+    # Some parameters for how to pretty-print
+    _print_divider = "  |  "
+    _print_divider_foot = "__|__"
+    _print_cell_width = 8
+
     def __init__(self, side_len):
         if side_len < 1:
             raise ValueError("side_len")
@@ -89,13 +94,35 @@ class Cube():
 
         return True        
 
+    def _print_header(self):
+        return "_" * ((self._side_len * self._side_len * Cube._print_cell_width)
+            + len(Cube._print_divider) * 2) + "\n"
+
+    def _print_emptyrow(self):
+        result = ""
+        for z in range(0, self._side_len - 1):
+            result = result + " " * (Cube._print_cell_width * self._side_len)
+            result = result + Cube._print_divider
+
+        result = result + "\n"
+        return result
+
+    def _print_footer(self):
+        result = ""
+        for z in range(0, self._side_len):
+            result = result + "_" * (Cube._print_cell_width * self._side_len)
+            if (z != self._side_len - 1):
+                result = result + Cube._print_divider_foot
+
+        return result
+
     def _print_cube_row(self, row, z):
-        width = 8
         result = ""
         for x in range(0, self._side_len):
             color = self._cube_values[x, row, z]
             color = "." if (color == "") else color
-            result = result + color[0:width].ljust(width)
+            result = result + \
+                color[0:Cube._print_cell_width].ljust(Cube._print_cell_width)
         return result
 
     def _print_all_rows(self, row):
@@ -103,13 +130,16 @@ class Cube():
         for z in range(0, self._side_len):
             result = result + self._print_cube_row(row, z)
             if (z != self._side_len - 1):
-                result = result + "  |  "
+                result = result + Cube._print_divider
         return result
 
     def __str__(self):
-        result = "\n"
+        result = self._print_header()
+        result = result + self._print_emptyrow()
         for y in range(0, self._side_len):
             result = result + self._print_all_rows(y)
             if (y != self._side_len - 1):
-                result = result + "\n"
+                result = result + "\n" + self._print_emptyrow()
+
+        result = result + "\n" + self._print_footer()
         return result

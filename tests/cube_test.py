@@ -4,25 +4,17 @@ from .context import Piece, Orientation, Cube
 
 class CubeTests(unittest.TestCase):
     def test_create_cube_should_succeed(self):
-        cube = Cube(dx=3, dy=3, dz=3)
+        cube = Cube(side_len = 3)
 
-    def test_create_cube_bogus_dx_should_fail(self):
+    def test_create_cube_bogus_sidelen_should_fail(self):
         with self.assertRaises(ValueError):
-            cube = Cube(dx=-1, dy=3, dz=3)
-
-    def test_create_cube_bogus_dy_should_fail(self):
-        with self.assertRaises(ValueError):
-            cube = Cube(dx=3, dy=-1, dz=3)
-
-    def test_create_cube_bogus_dz_should_fail(self):
-        with self.assertRaises(ValueError):
-            cube = Cube(dx=3, dy=3, dz=-1)
+            cube = Cube(side_len = -1)
 
     def test_place_small_piece_inbounds_should_succeed(self):
         colors = np.array(['red'])
 
         piece = Piece(colors)
-        cube = Cube(dx=1, dy=1, dz=1)
+        cube = Cube(side_len = 1)
 
         self.assertTrue(cube.try_place_piece(piece,
             origin = np.array([0, 0, 0]),
@@ -32,7 +24,7 @@ class CubeTests(unittest.TestCase):
         colors = np.array(['red', 'white', 'blue'])
 
         piece = Piece(colors)
-        cube = Cube(dx=3, dy=3, dz=3)
+        cube = Cube(side_len = 3)
 
         self.assertTrue(cube.try_place_piece(piece,
             origin = np.array([0, 0, 0]),
@@ -42,7 +34,7 @@ class CubeTests(unittest.TestCase):
         colors = np.array(['red', 'white', 'blue', 'red'])
 
         piece = Piece(colors)
-        cube = Cube(dx=3, dy=3, dz=3)
+        cube = Cube(side_len = 3)
 
         self.assertTrue(not cube.try_place_piece(piece,
             origin = np.array([0, 0, 0]),
@@ -52,7 +44,7 @@ class CubeTests(unittest.TestCase):
         colors = np.array(['red', 'white', 'blue'])
 
         piece = Piece(colors)
-        cube = Cube(dx=3, dy=3, dz=3)
+        cube = Cube(side_len = 3)
 
         self.assertTrue(not cube.try_place_piece(piece,
             origin = np.array([0, 0, 0]),
@@ -63,7 +55,7 @@ class CubeTests(unittest.TestCase):
 
         piece1 = Piece(colors)
         piece2 = Piece(colors)
-        cube = Cube(dx=3, dy=3, dz=3)
+        cube = Cube(side_len = 3)
 
         self.assertTrue(cube.try_place_piece(piece1,
             origin = np.array([0, 0, 0]),
@@ -79,7 +71,7 @@ class CubeTests(unittest.TestCase):
 
         piece1 = Piece(colors)
         piece2 = Piece(colors)
-        cube = Cube(dx=3, dy=3, dz=3)
+        cube = Cube(side_len = 3)
 
         self.assertTrue(cube.try_place_piece(piece1,
             origin = np.array([0, 0, 0]),
@@ -95,7 +87,7 @@ class CubeTests(unittest.TestCase):
 
         piece1 = Piece(colors)
         piece2 = Piece(colors)
-        cube = Cube(dx=1, dy=1, dz=1)
+        cube = Cube(side_len = 1)
 
         self.assertTrue(cube.try_place_piece(piece1,
             origin = np.array([0, 0, 0]),
@@ -110,7 +102,7 @@ class CubeTests(unittest.TestCase):
         colors = np.array(['red', 'white', 'blue'])
 
         piece = Piece(colors)
-        cube = Cube(dx=3, dy=3, dz=3)
+        cube = Cube(side_len = 3)
 
         self.assertTrue(cube.try_place_piece(piece,
             origin = np.array([0, 0, 0]),

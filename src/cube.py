@@ -4,36 +4,28 @@ from mypiece import Orientation, check_valid_orienation, validate_origin, Piece
 from coordhelper import CoordinateHelper
 
 class Cube():
-    def __init__(self, dx, dy, dz):
-        if dx < 1:
-            raise ValueError("dx")
-
-        if dy < 1:
-            raise ValueError("dy")
-
-        if dz < 1:
-            raise ValueError("dz")
+    def __init__(self, side_len):
+        if side_len < 1:
+            raise ValueError("side_len")
 
         self._listpieces = set()
-        self._dx = dx
-        self._dy = dy
-        self._dz = dz
+        self._side_len = side_len
 
         self._empty_cube()
 
     def _empty_cube(self):
-        self._cube_values = np.full((self._dx, self._dy, self._dx),
+        self._cube_values = np.full((self._side_len, self._side_len, self._side_len),
             "",
             dtype=np.dtype('U50'))
 
     def _is_xyz_within_cube(self, x, y, z):
-        if x < 0 or x >= self._dx:
+        if x < 0 or x >= self._side_len:
             return False
 
-        if y < 0 or y >= self._dy:
+        if y < 0 or y >= self._side_len:
             return False
 
-        if z < 0 or z >= self._dz:
+        if z < 0 or z >= self._side_len:
             return False
         
         return True

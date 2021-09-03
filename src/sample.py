@@ -20,4 +20,4 @@ cube.try_place_piece(
     origin = np.array([0, 1, 0]),
     orientation = Orientation.TOWARDS_XPOSITIVE)
 
-print("Done!")
+print(cube)

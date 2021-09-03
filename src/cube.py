@@ -88,3 +88,28 @@ class Cube():
         self._listpieces.add(piece)
 
         return True        
+
+    def _print_cube_row(self, row, z):
+        width = 8
+        result = ""
+        for x in range(0, self._side_len):
+            color = self._cube_values[x, row, z]
+            color = "." if (color == "") else color
+            result = result + color[0:width].ljust(width)
+        return result
+
+    def _print_all_rows(self, row):
+        result = ""
+        for z in range(0, self._side_len):
+            result = result + self._print_cube_row(row, z)
+            if (z != self._side_len - 1):
+                result = result + "  |  "
+        return result
+
+    def __str__(self):
+        result = "\n"
+        for y in range(0, self._side_len):
+            result = result + self._print_all_rows(y)
+            if (y != self._side_len - 1):
+                result = result + "\n"
+        return result

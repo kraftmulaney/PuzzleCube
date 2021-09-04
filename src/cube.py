@@ -73,9 +73,9 @@ class Cube():
             return NotImplemented
 
         # Note: __listpieces can be compared easily since it's a Set, and order doesn't matter
-        return self.__side_len == other.__side_len and \
-            np.array_equal(self.__cube_values, other.__cube_values) and \
-            self.__listpieces == other.__listpieces
+        return (self.__side_len == other.__side_len) and \
+            (np.array_equal(self.__cube_values, other.__cube_values)) and \
+            (self.__listpieces == other.__listpieces)
 
     # Returns False if the piece cant be placed there
     def try_place_piece(self, piece, origin, orientation):
@@ -112,7 +112,7 @@ class Cube():
                 piece_coord.loc[2],
                 piece_coord.color)
 
-        # $TODO Note that I'm not story the position or orientation of a piece.  So supporting "remove piece" is impossible
+        # $TODO Note that I'm not yet storing the position or orientation of a piece.  So supporting "remove piece" is impossible
         self.__listpieces.add(piece)
 
         return True

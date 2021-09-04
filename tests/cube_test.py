@@ -113,3 +113,19 @@ class CubeTests(unittest.TestCase):
             cube.try_place_piece(piece,
                 origin = np.array([0, 1, 0]),
                 orientation = Orientation.TOWARDS_XPOSITIVE)
+
+    def test_place_similar_but_separate_piece_twice_should_succeed(self):
+        colors = np.array(['blue'])
+
+        piece1 = Piece(colors)
+        piece2 = Piece(colors)
+        cube = Cube(side_len = 3)
+
+        self.assertTrue(cube.try_place_piece(piece1,
+            origin = np.array([0, 0, 0]),
+            orientation = Orientation.TOWARDS_XPOSITIVE))
+
+        # Even though the two pieces look the same, we should be able to insert both into the Cube
+        self.assertTrue(cube.try_place_piece(piece2,
+            origin = np.array([0, 1, 0]),
+            orientation = Orientation.TOWARDS_XPOSITIVE))

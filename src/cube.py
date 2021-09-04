@@ -2,13 +2,9 @@ import matplotlib.colors as mcolors
 import numpy as np
 from mypiece import Orientation, check_valid_orienation, validate_origin, Piece
 from coordhelper import CoordinateHelper
+from print_cube import CubePrettyPrinter
 
 class Cube():
-    # Some parameters for how to pretty-print
-    __print_divider = "  |  "
-    __print_divider_footer = "__|__"
-    __print_cell_width = 8
-
     def __init__(self, side_len):
         if side_len < 1:
             raise ValueError("side_len")
@@ -17,6 +13,8 @@ class Cube():
         self.__side_len = side_len
 
         self.__empty_cube()
+
+        self.__pp = CubePrettyPrinter(side_len)
 
     def __empty_cube(self):
         self.__cube_values = np.full((self.__side_len, self.__side_len, self.__side_len),
@@ -117,53 +115,6 @@ class Cube():
 
         return True
 
-    # $TODO Move pretty print into its own class
-    def __print_header(self):
-        return "_" * ((self.__side_len * self.__side_len * Cube.__print_cell_width)
-            + len(Cube.__print_divider) * 2) + "\n"
-
-    def __print_emptyrow(self):
-        result = ""
-        for z in range(0, self.__side_len - 1):
-            result = result + " " * (Cube.__print_cell_width * self.__side_len)
-            result = result + Cube.__print_divider
-
-        result = result + "\n"
-        return result
-
-    def __print_footer(self):
-        result = ""
-        for z in range(0, self.__side_len):
-            result = result + "_" * (Cube.__print_cell_width * self.__side_len)
-            if (z != self.__side_len - 1):
-                result = result + Cube.__print_divider_footer
-
-        return result
-
-    def __print_cube_row(self, row, z):
-        result = ""
-        for x in range(0, self.__side_len):
-            color = self.__cube_values[x, row, z]
-            color = "." if (color == "") else color
-            result = result + \
-                color[0:Cube.__print_cell_width].ljust(Cube.__print_cell_width)
-        return result
-
-    def __print_all_rows(self, row):
-        result = ""
-        for z in range(0, self.__side_len):
-            result = result + self.__print_cube_row(row, z)
-            if (z != self.__side_len - 1):
-                result = result + Cube.__print_divider
-        return result
 
     def __str__(self):
-        result = self.__print_header()
-        result = result + self.__print_emptyrow()
-        for y in range(0, self.__side_len):
-            result = result + self.__print_all_rows(y)
-            if (y != self.__side_len - 1):
-                result = result + "\n" + self.__print_emptyrow()
-
-        result = result + "\n" + self.__print_footer()
-        return result
+        return self.__pp.pretty_print_cube(self.__cube_values)

@@ -4,7 +4,7 @@ from .context import Piece, Orientation, Cube, CoordinateHelper, CoordinateOfPie
 
 
 class CoordinateHelperTests(unittest.TestCase):
-    def _compare_coord_lists(self, list1, list2):
+    def __compare_coord_lists(self, list1, list2):
         if len(list1) != len(list2):
             return False
 
@@ -14,22 +14,22 @@ class CoordinateHelperTests(unittest.TestCase):
 
         return True
 
-    def _place_piece_helper(self, piece, origin, orientation, expected_result):
+    def __place_piece_helper(self, piece, origin, orientation, expected_result):
         piece_coords = CoordinateHelper.GetIndividualPieceCoordinates(piece,
             origin,
             orientation)
 
-        self.assertTrue(self._compare_coord_lists(piece_coords, expected_result))
+        self.assertTrue(self.__compare_coord_lists(piece_coords, expected_result))
 
     def test_place_small_piece_should_succeed(self):
-        self._place_piece_helper(
+        self.__place_piece_helper(
              piece  = Piece(np.array(['blue'])),
              origin = np.array([0, 0, 0]),
              orientation = Orientation.TOWARDS_XPOSITIVE,
              expected_result = [CoordinateOfPiece(np.array([0 ,0, 0]), 'blue')])
 
     def test_place_piece_xpos_should_succeed(self):
-        self._place_piece_helper(
+        self.__place_piece_helper(
              piece  = Piece(np.array(['red', 'white', 'blue'])),
              origin = np.array([1, 1, 1]),
              orientation = Orientation.TOWARDS_XPOSITIVE,
@@ -41,7 +41,7 @@ class CoordinateHelperTests(unittest.TestCase):
              ])
 
     def test_place_piece_xneg_should_succeed(self):
-        self._place_piece_helper(
+        self.__place_piece_helper(
              piece  = Piece(np.array(['red', 'white', 'blue'])),
              origin = np.array([1, 1, 1]),
              orientation = Orientation.TOWARDS_XNEGATIVE,
@@ -53,7 +53,7 @@ class CoordinateHelperTests(unittest.TestCase):
              ])
 
     def test_place_piece_ypos_should_succeed(self):
-        self._place_piece_helper(
+        self.__place_piece_helper(
              piece  = Piece(np.array(['red', 'white', 'blue'])),
              origin = np.array([1, 1, 1]),
              orientation = Orientation.TOWARDS_YPOSITIVE,
@@ -65,7 +65,7 @@ class CoordinateHelperTests(unittest.TestCase):
              ])
 
     def test_place_piece_yneg_should_succeed(self):
-        self._place_piece_helper(
+        self.__place_piece_helper(
              piece  = Piece(np.array(['red', 'white', 'blue'])),
              origin = np.array([1, 1, 1]),
              orientation = Orientation.TOWARDS_YNEGATIVE,
@@ -77,7 +77,7 @@ class CoordinateHelperTests(unittest.TestCase):
              ])
 
     def test_place_piece_zpos_should_succeed(self):
-        self._place_piece_helper(
+        self.__place_piece_helper(
              piece  = Piece(np.array(['red', 'white', 'blue'])),
              origin = np.array([1, 1, 1]),
              orientation = Orientation.TOWARDS_ZPOSITIVE,
@@ -89,7 +89,7 @@ class CoordinateHelperTests(unittest.TestCase):
              ])
 
     def test_place_piece_zneg_should_succeed(self):
-        self._place_piece_helper(
+        self.__place_piece_helper(
              piece  = Piece(np.array(['red', 'white', 'blue'])),
              origin = np.array([1, 1, 1]),
              orientation = Orientation.TOWARDS_ZNEGATIVE,

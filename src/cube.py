@@ -9,17 +9,19 @@ class Cube():
         if side_len < 1:
             raise ValueError("side_len")
 
-        self.__listpieces = set()
         self.__side_len = side_len
-
-        self.__empty_cube()
+        self.clear()
 
         self.__pp = CubePrettyPrinter(side_len)
 
-    def __empty_cube(self):
+    def clear(self):
+        self.__listpieces = set()
+
         self.__cube_values = np.full((self.__side_len, self.__side_len, self.__side_len),
             "",
             dtype=np.dtype('U50'))
+
+        self.__count_pieces = 0
 
     def __is_xyz_within_cube(self, x, y, z):
         if x < 0 or x >= self.__side_len:
@@ -86,6 +88,8 @@ class Cube():
         if piece in self.__listpieces:
             raise ValueError("That piece is already placed")
 
+        self.__sanity_check_piece_count()
+
         piece_coords = CoordinateHelper.GetIndividualPieceCoordinates(
             piece,
             origin,
@@ -112,9 +116,31 @@ class Cube():
 
         # $TODO Note that I'm not yet storing the position or orientation of a piece.  So supporting "remove piece" is impossible
         self.__listpieces.add(piece)
+        self.__count_pieces = self.__count_pieces + 1
+        self.__sanity_check_piece_count()
 
         return True
 
+    # $TODO
+    def remove_piece(self, piece):
+        raise NotImplemented("Not yet implemented")
+
+    def __count_individual_pieces(self):
+        return np.count_nonzero(self.__cube_values != "")
+
+    @property
+    def is_empty(self):
+        self.__sanity_check_piece_count()
+        return self.__count_individual_pieces() == 0
+
+    @property
+    def is_full(self):
+        self.__sanity_check_piece_count()
+        return self.__count_individual_pieces() == self.__side_len**3
 
     def __str__(self):
         return self.__pp.pretty_print_cube(self.__cube_values)
+
+    def __sanity_check_piece_count(self):
+        assert (self.__count_pieces >= 0) and (self.__count_pieces <= self.__side_len**3)
+        assert self.__count_pieces == len(self.__listpieces)

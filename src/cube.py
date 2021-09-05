@@ -15,7 +15,7 @@ class Cube():
         self.__pp = CubePrettyPrinter(side_len)
 
     def clear(self):
-        self.__listpieces = set()
+        self.__listpieces = {}
 
         self.__cube_values = np.full((self.__side_len, self.__side_len, self.__side_len),
             "",
@@ -72,10 +72,10 @@ class Cube():
             # Don't attempt to compare against unrelated types
             return NotImplemented
 
-        # Note: __listpieces can be compared easily since it's a Set, and order doesn't matter
+        # Note: __listpieces can be compared easily since it's a Dictionary, and order doesn't matter
         return (self.__side_len == other.__side_len) and \
             (np.array_equal(self.__cube_values, other.__cube_values)) and \
-            (self.__listpieces == other.__listpieces)
+            (self.__listpieces.keys() == other.__listpieces.keys())
 
     # Returns False if the piece cant be placed there
     def try_place_piece(self, piece, origin, orientation):
@@ -85,7 +85,7 @@ class Cube():
         if not validate_origin(origin):
             raise TypeError("Invalid origin")
 
-        if piece in self.__listpieces:
+        if piece in self.__listpieces.keys():
             raise ValueError("That piece is already placed")
 
         self.__sanity_check_piece_count()
@@ -114,16 +114,42 @@ class Cube():
                 piece_coord.loc[2],
                 piece_coord.color)
 
-        # $TODO Note that I'm not yet storing the position or orientation of a piece.  So supporting "remove piece" is impossible
-        self.__listpieces.add(piece)
+        # In the list of Pieces, you can quickly lookup origin and orientation where piece was placed in the cube
+        self.__listpieces[piece] = (origin, orientation)
         self.__count_pieces = self.__count_pieces + 1
         self.__sanity_check_piece_count()
 
         return True
 
-    # $TODO
     def remove_piece(self, piece):
-        raise NotImplemented("Not yet implemented")
+        if not piece in self.__listpieces.keys():
+            raise ValueError("That piece isnt in the cube")
+
+        self.__sanity_check_piece_count()
+
+        # Clear all the elements in the Cube for this piece
+        origin, orientation = self.__listpieces[piece]
+        piece_coords = CoordinateHelper.GetIndividualPieceCoordinates(
+            piece,
+            origin,
+            orientation)
+
+        for piece_coord in piece_coords:
+            # Double-check that expected color is where it should be as we remove it
+            assert self.__get_color(
+                piece_coord.loc[0],
+                piece_coord.loc[1],
+                piece_coord.loc[2]) == piece_coord.color
+
+            self.__set_color(
+                piece_coord.loc[0],
+                piece_coord.loc[1],
+                piece_coord.loc[2],
+                "")
+
+        del self.__listpieces[piece]
+        self.__count_pieces = self.__count_pieces - 1
+        self.__sanity_check_piece_count()
 
     def __count_individual_pieces(self):
         return np.count_nonzero(self.__cube_values != "")
@@ -143,4 +169,4 @@ class Cube():
 
     def __sanity_check_piece_count(self):
         assert (self.__count_pieces >= 0) and (self.__count_pieces <= self.__side_len**3)
-        assert self.__count_pieces == len(self.__listpieces)
+        assert self.__count_pieces == len(self.__listpieces.keys())

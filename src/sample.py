@@ -33,7 +33,7 @@ print("Cloning cube...")
 cubecopy = copy(cube)
 
 cubes_equal = cube == cubecopy
-print(f"\nCubes are equual: {cubes_equal}")
+print(f"\nCubes are equal: {cubes_equal}")
 
 print("\nPlacing piece #4 to original cube only")
 cube.try_place_piece(
@@ -48,4 +48,4 @@ print ("\nCloned Cube:")
 print(cubecopy)
 
 cubes_equal = cube == cubecopy
-print(f"\nCubes are equual: {cubes_equal}")
+print(f"\nCubes are equal: {cubes_equal}")

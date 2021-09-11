@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
 from .context import Piece, Orientation, Cube
-from copy import Error, copy
+from copy import copy
 
 class CubeTests(unittest.TestCase):
     def test_create_cube_should_succeed(self):

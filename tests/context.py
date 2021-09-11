@@ -8,3 +8,4 @@ from src.mypiece import Piece
 from src.cube import Orientation
 from src.cube import Cube
 from src.coordhelper import CoordinateHelper, CoordinateOfPiece
+from src.rules import CheckIfCubeFull

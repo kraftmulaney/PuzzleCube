@@ -1,12 +1,8 @@
-from src.irules import EndGameInterface
-from irules import RulesInterface
+from src.irules import ICheckCubeCondition
 
-class RuleAdjacentPiecesDifferentColors(RulesInterface):
-    def is_legal_board(self):
-        # $TODO
-        return True
+class CheckIfCubeFull(ICheckCubeCondition):
+    def __init__(self, cube):
+        self.__cube = cube
 
-class GameEndCheckAllSquaresFilled(EndGameInterface):
-    def is_game_ended(self):
-        # $TODO
-        return True
+    def check_cube(self):
+        return self.__cube.is_full

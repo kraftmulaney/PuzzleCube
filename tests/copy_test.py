@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
 from .context import Piece, Orientation, Cube
-from copy import Error, copy
+from copy import copy
 
 class CopyTests(unittest.TestCase):
     def test_copy_empty_cube_should_be_equal(self):
